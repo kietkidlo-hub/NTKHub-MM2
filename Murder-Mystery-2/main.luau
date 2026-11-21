@@ -1,7 +1,7 @@
 task.defer(function()
 	pcall(function()
 		game:GetService("StarterGui"):SetCore("SendNotification", {
-			Title = "Foxname",
+			Title = "NTK HUB",
 			Text = "Script is loading. This may take a few seconds...",
 			Icon = "rbxassetid://133245078123989",
 			Duration = 5,
@@ -12,7 +12,24 @@ end)
 local genv
 genv = getgenv and getgenv() or _G
 
-FoxnameCopyToClipboard = function(arg)
+local customBackground = "rbxassetid://82503368188240"
+pcall(function()
+	if type(writefile) == "function" and type(getcustomasset) == "function" then
+		local url = "https://i.pinimg.com/736x/eb/66/7e/eb667e1bf9915395a7847f5f5f1230ad.jpg"
+		local filePath = "NTK_background.jpg"
+		if not (type(isfile) == "function" and isfile(filePath)) then
+			local data = game:HttpGet(url)
+			if type(data) == "string" and #data > 100 then
+				writefile(filePath, data)
+			end
+		end
+		if type(isfile) == "function" and isfile(filePath) then
+			customBackground = getcustomasset(filePath)
+		end
+	end
+end)
+
+NTKHubCopyToClipboard = function(arg)
 	local str = tostring(arg or "")
 	local v
 
@@ -30,7 +47,7 @@ FoxnameCopyToClipboard = function(arg)
 	return false
 end
 
-FoxnameKickPlayer = function(arg, arg2)
+NTKHubKickPlayer = function(arg, arg2)
 	if not arg then
 		return false
 	end
@@ -52,7 +69,7 @@ FoxnameKickPlayer = function(arg, arg2)
 	end))
 end
 
-local hookSupported, silentAimSupported, foxnameMM2Runtime, sessionId, isTerminated, WindUI, Window, isOwner
+local hookSupported, silentAimSupported, NTKHubMM2Runtime, sessionId, isTerminated, WindUI, Window, isOwner
 local isXenoExecutor = false
 local Tabs = nil
 local runService = game:GetService("RunService")
@@ -121,7 +138,7 @@ end
 
 local function waitForGameUIReady(timeout)
 	local deadline = os.clock() + (tonumber(timeout) or 6)
-	while (not foxnameMM2Runtime or foxnameMM2Runtime.alive) and not isTerminated do
+	while (not NTKHubMM2Runtime or NTKHubMM2Runtime.alive) and not isTerminated do
 		if isGameUIReady() then
 			return true
 		end
@@ -239,14 +256,14 @@ do
 	local v9 = fn6()
 	hookSupported = v9
 	silentAimSupported = v9
-	genv.__FoxnameMM2Runtime = genv.__FoxnameMM2Runtime or { running = false, windui = nil, window = nil, alive = false, sessionId = nil }
-	foxnameMM2Runtime = genv.__FoxnameMM2Runtime
+	genv.__NTKHubMM2Runtime = genv.__NTKHubMM2Runtime or { running = false, windui = nil, window = nil, alive = false, sessionId = nil }
+	NTKHubMM2Runtime = genv.__NTKHubMM2Runtime
 	local random = math.random
 	sessionId = string.format("%.6f_%d", os.clock(), random(100000, 999999))
 	isTerminated = false
 
-	if foxnameMM2Runtime.running and foxnameMM2Runtime.alive then
-		local windui = foxnameMM2Runtime.windui
+	if NTKHubMM2Runtime.running and NTKHubMM2Runtime.alive then
+		local windui = NTKHubMM2Runtime.windui
 
 		if windui and type(windui.Notify) == "function" then
 			pcall(function()
@@ -257,9 +274,9 @@ do
 		return
 	end
 
-	foxnameMM2Runtime.running = true
-	foxnameMM2Runtime.alive = true
-	foxnameMM2Runtime.sessionId = sessionId
+	NTKHubMM2Runtime.running = true
+	NTKHubMM2Runtime.alive = true
+	NTKHubMM2Runtime.sessionId = sessionId
 	local HttpService = game:GetService("HttpService")
 
 	local function resolveHttpRequest()
@@ -572,7 +589,7 @@ do
 
 			local n6 = 0
 
-			while foxnameMM2Runtime.alive do
+			while NTKHubMM2Runtime.alive do
 				local deviceSelect = playerGui:FindFirstChild("DeviceSelect")
 				deviceSelect = deviceSelect and deviceSelect:FindFirstChild("Container")
 
@@ -634,9 +651,9 @@ do
 			"https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
 		}
 
-		local cachePath = "Foxname/WindUI_cache.lua"
+		local cachePath = "NTKHub/WindUI_cache.lua"
 		local function isRawWindUI(src)
-			return typeof(src) == "string" and #src > 400 and src:sub(1, 7) ~= "--[[FN_" and src:sub(1, 10) ~= "--[Foxname"
+			return typeof(src) == "string" and #src > 400 and src:sub(1, 7) ~= "--[[FN_" and src:sub(1, 10) ~= "--[NTKHub"
 		end
 
 		local function tryReadCache()
@@ -656,8 +673,8 @@ do
 		local function tryWriteCache(src)
 			if typeof(writefile) == "function" and isRawWindUI(src) then
 				pcall(function()
-					if typeof(isfolder) == "function" and typeof(makefolder) == "function" and not isfolder("Foxname") then
-						makefolder("Foxname")
+					if typeof(isfolder) == "function" and typeof(makefolder) == "function" and not isfolder("NTKHub") then
+						makefolder("NTKHub")
 					end
 					writefile(cachePath, src)
 				end)
@@ -946,7 +963,7 @@ do
 	end
 
 	WindUI = fn18()
-	foxnameMM2Runtime.windui = WindUI
+	NTKHubMM2Runtime.windui = WindUI
 
 	task.spawn(function()
 		local ok, cp = pcall(game.GetService, game, "ContentProvider")
@@ -1043,7 +1060,7 @@ do
 				Icon = "arrow-right",
 				Variant = "Primary",
 				Callback = function()
-					FoxnameCopyToClipboard("https://discord.gg/v8ZPq4y2nD")
+					NTKHubCopyToClipboard("https://discord.gg/8H42JBm783")
 
 					WindUI:Notify({
 						Title = "Success",
@@ -1066,19 +1083,19 @@ do
 	local color2 = Color3.fromHex
 
 	Window = WindUI:CreateWindow({
-		Title = fn19("Foxname - Murder Mystery 2", Color3.fromRGB(255, 64, 96), color(255, 186, 220)),
-		Author = "discord.gg/v8ZPq4y2nD",
+		Title = fn19("NTK HUB - Murder Mystery 2", Color3.fromRGB(255, 64, 96), color(255, 186, 220)),
+		Author = "NTK HUB | https://discord.gg/8H42JBm783",
 		Theme = "Rose",
 		Size = UDim2.fromOffset(520, 420),
-		Folder = "Foxname_MM2",
+		Folder = "NTKHub_MM2",
 		SideBarWidth = 200,
 		Enabled = true,
 		Draggable = true,
 		OnlyMobile = false,
 		ScrollBarEnabled = true,
-		Icon = "rbxassetid://133245078123989",
-		Background = "rbxassetid://82503368188240",
-		BackgroundImageTransparency = 0.6,
+		Icon = "rbxassetid://133245078123989", -- Hoặc `customLogo` nếu bạn đã tạo ở bước trước
+		Background = customBackground,
+		BackgroundImageTransparency = 0.6, -- Muốn ảnh nền rõ hơn thì giảm xuống 0.3 hoặc 0
 		User = { Enabled = true, Anonymous = false },
 		OpenButton = {
 			Title = "Open Menu",
@@ -1091,7 +1108,52 @@ do
 		},
 	})
 
-	foxnameMM2Runtime.window = Window
+	NTKHubMM2Runtime.window = Window
+
+	task.defer(function()
+		local main = Window.UIElements and Window.UIElements.Main
+		if not main then return end
+		main.ClipsDescendants = true
+
+		local function fixBgImage(img)
+			if not img or not img:IsA("ImageLabel") then return end
+			local parent = img.Parent
+			if not parent or not parent:IsA("GuiObject") then return end
+			parent.ClipsDescendants = true
+
+			img.AnchorPoint = Vector2.new(0.5, 0.5)
+			img.Position = UDim2.fromScale(0.5, 0.5)
+			img.ScaleType = Enum.ScaleType.Crop
+
+			local function syncSize()
+				if not img.Parent or not parent.Parent then return end
+				local isCustom = (img.Image == customBackground)
+				img.Rotation = isCustom and -90 or 0 -- Đổi 90 thành -90 nếu muốn xoay ngược lại, hoặc 0 nếu chỉ muốn hết méo
+
+				local s = parent.AbsoluteSize
+				if s.X <= 0 or s.Y <= 0 then
+					img.Size = (math.abs(img.Rotation) % 180 == 90) and UDim2.fromOffset(420, 520) or UDim2.fromScale(1, 1)
+					return
+				end
+
+				if math.abs(img.Rotation) % 180 == 90 then
+					img.Size = UDim2.fromOffset(s.Y, s.X)
+				else
+					img.Size = UDim2.fromScale(1, 1)
+				end
+			end
+
+			syncSize()
+			parent:GetPropertyChangedSignal("AbsoluteSize"):Connect(syncSize)
+			img:GetPropertyChangedSignal("Image"):Connect(syncSize)
+		end
+
+		for _, d in ipairs(main:GetDescendants()) do
+			if d:IsA("ImageLabel") and d.Image == customBackground then
+				fixBgImage(d)
+			end
+		end
+	end)
 
 	Window:Tag({ Title = "Release", Icon = "rocket", Color = Color3.fromRGB(255, 13, 49) })
 	isOwner = false
@@ -1172,19 +1234,19 @@ do
 	game:GetService("RunService").Heartbeat:Wait()
 
 	local HttpService2 = game:GetService("HttpService")
-	local str2 = "v8ZPq4y2nD"
+	local str2 = "8H42JBm783"
 	local str3 = "https://discord.gg/" .. str2
 	local str4 = "https://discord.com/api/v10/invites/" .. str2 .. "?with_counts=true&with_expiration=true"
 
 	local v11 = Tabs.Discord:Paragraph({
-		Title = "Foxname Community",
+		Title = "NTK HUB Community",
 		Desc = "Loading Discord information...",
 		Image = "messages-square",
 		ImageSize = 42,
 	})
 
 	local function fn22(arg)
-		return FoxnameCopyToClipboard(arg)
+		return NTKHubCopyToClipboard(arg)
 	end
 
 	local function fn23()
@@ -1206,9 +1268,9 @@ do
 				or "messages-square"
 
 			pcall(function()
-				v11:SetTitle(tostring(guild.name or "Foxname Community"))
-				v11:SetDesc("<font color=\"#22C55E\"><b>LIVE</b></font>  Foxname community server" .. "\nMembers: " .. tostring(arg.approximate_member_count or "?") .. "  |  Online: " .. tostring(arg.approximate_presence_count or "?") .. "\n<font color=\"#94A3B8\">discord.gg/" .. str2 .. "</font>")
-				v11:SetImage(icon, 42)
+				v11:SetTitle("NTK HUB")
+				v11:SetDesc("<font color=\"#22C55E\"><b>LIVE</b></font>  NTK HUB community server" .. "\nMembers: " .. tostring(arg.approximate_member_count or "?") .. "  |  Online: " .. tostring(arg.approximate_presence_count or "?") .. "\n<font color=\"#94A3B8\">discord.gg/" .. str2 .. "</font>")
+				v11:SetImage(icon, 42) -- Nếu muốn dùng logo riêng của bạn thì thay `icon` thành `"rbxassetid://ID_ANH_MOI"` hoặc `customLogo`
 			end)
 
 			if arg2 then
@@ -1224,7 +1286,7 @@ do
 		end
 
 		pcall(function()
-			v11:SetTitle("Foxname Community")
+			v11:SetTitle("NTK HUB Community")
 			v11:SetDesc("Live Discord information is unavailable.\n" .. str3)
 			v11:SetImage("wifi-off", 34)
 		end)
@@ -1269,7 +1331,7 @@ do
 		end,
 	})
 
-	local str5 = tostring(genv.FOXNAME_COMPATIBILITY_REPORT_ENDPOINT or "")
+	local str5 = tostring(genv.NTKHub_COMPATIBILITY_REPORT_ENDPOINT or "")
 	local tbl3 = {}
 
 	for _, check in ipairs(v10.checks) do
@@ -1292,7 +1354,7 @@ do
 		ImageSize = 34,
 	})
 
-	local function foxnameSendCompatibilityReport(arg, arg2)
+	local function NTKHubSendCompatibilityReport(arg, arg2)
 		if v10.score >= 100 and not arg2 then
 			return true
 		end
@@ -1361,7 +1423,7 @@ do
 		return ok
 	end
 
-	genv.__FoxnameSendCompatibilityReport = foxnameSendCompatibilityReport
+	genv.__NTKHubSendCompatibilityReport = NTKHubSendCompatibilityReport
 
 	task.defer(function()
 		WindUI:Notify({
@@ -1372,7 +1434,7 @@ do
 		})
 
 		if v10.score < 100 then
-			task.spawn(foxnameSendCompatibilityReport, false)
+			task.spawn(NTKHubSendCompatibilityReport, false)
 		end
 
 		task.spawn(function()
@@ -1682,7 +1744,7 @@ Hub.RoleState = { cache = {}, lastGunDropPicker = nil, lastGunDropAt = 0, gunDro
 Hub.AutoExecuteOnTeleport = true
 
 Hub.ShowLockedDialog = function(title, content)
-	local win = (foxnameMM2Runtime and foxnameMM2Runtime.window) or Window
+	local win = (NTKHubMM2Runtime and NTKHubMM2Runtime.window) or Window
 	if win and type(win.Dialog) == "function" then
 		pcall(function()
 			win:Dialog({
@@ -2382,7 +2444,7 @@ end
 Hub.AutoPrestige.Init()
 
 task.spawn(function()
-	while foxnameMM2Runtime.alive and not isTerminated do
+	while NTKHubMM2Runtime.alive and not isTerminated do
 		if Hub.AutoPrestige.enabled then
 			pcall(Hub.AutoPrestige.Check)
 		end
@@ -2482,7 +2544,7 @@ end
 Hub.AutoClaimReward.Init()
 
 task.spawn(function()
-	while foxnameMM2Runtime.alive and not isTerminated do
+	while NTKHubMM2Runtime.alive and not isTerminated do
 		if Hub.AutoClaimReward.enabled then
 			if not Hub.AutoClaimReward.connection then
 				pcall(Hub.AutoClaimReward.Init)
@@ -2908,7 +2970,7 @@ Hub.CoinFarm.EnforceTravelNoclip = function(character, holdCF)
 						end)
 					end
 					local bv = Instance.new("BodyVelocity")
-					bv.Name = "FoxnameCoinFarmStabilizer"
+					bv.Name = "NTKHubCoinFarmStabilizer"
 					bv.Velocity = Vector3.zero
 					bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
 					bv.P = 90000
@@ -2931,7 +2993,7 @@ Hub.CoinFarm.EnforceTravelNoclip = function(character, holdCF)
 	end
 	Hub.CoinFarm._travelNoclipConn = RunService.Stepped:Connect(function()
 		local c = localPlayer and localPlayer.Character
-		if not Hub.CoinFarm.enabled or not foxnameMM2Runtime.alive or isTerminated or not Hub.RoundState.active or not c or not c.Parent then
+		if not Hub.CoinFarm.enabled or not NTKHubMM2Runtime.alive or isTerminated or not Hub.RoundState.active or not c or not c.Parent then
 			Hub.CoinFarm.ReleaseTravelNoclip(true)
 			return
 		end
@@ -3103,7 +3165,7 @@ Hub.CoinFarm.EnableUnder = function(underCharacter, arg, arg2)
 		end
 
 		local bodyVelocity = Instance.new("BodyVelocity")
-		bodyVelocity.Name = "FoxnameCoinFarmStabilizer"
+		bodyVelocity.Name = "NTKHubCoinFarmStabilizer"
 		bodyVelocity.Velocity = Vector3.zero
 		bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
 		bodyVelocity.P = 90000
@@ -3117,7 +3179,7 @@ Hub.CoinFarm.EnableUnder = function(underCharacter, arg, arg2)
 
 	if not Hub.CoinFarm.underPoseConnection or not Hub.CoinFarm.underPoseConnection.Connected then
 		Hub.CoinFarm.underPoseConnection = RunService.Stepped:Connect(function()
-			if not foxnameMM2Runtime.alive or isTerminated or not Hub.CoinFarm.enabled or not Hub.RoundState.active or Hub.FlingActive then
+			if not NTKHubMM2Runtime.alive or isTerminated or not Hub.CoinFarm.enabled or not Hub.RoundState.active or Hub.FlingActive then
 				if Hub.CoinFarm.underPoseConnection then
 					Hub.CoinFarm.underPoseConnection:Disconnect()
 					Hub.CoinFarm.underPoseConnection = nil
@@ -4337,7 +4399,7 @@ Hub.CoinFarm.ApplyBagCount = function(arg, arg2)
 end
 
 task.spawn(function()
-	while foxnameMM2Runtime.alive and not isTerminated do
+	while NTKHubMM2Runtime.alive and not isTerminated do
 		if Hub.CoinFarm.enabled then
 			Hub.CoinFarm.SyncEarnedXP()
 
@@ -4741,7 +4803,7 @@ Hub.CoinFarm.QueueEndRoundAfterRespawn = function()
 		local exitTo = nil
 
 		while true do
-			if foxnameMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and Hub.CoinFarm.endRoundEnabled and Hub.RoundState.active and Hub.CoinFarm.endRoundRespawnRetryGeneration == endRoundRespawnRetryGeneration then
+			if NTKHubMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and Hub.CoinFarm.endRoundEnabled and Hub.RoundState.active and Hub.CoinFarm.endRoundRespawnRetryGeneration == endRoundRespawnRetryGeneration then
 				local character_2 = localPlayer.Character
 				local humanoid = character_2 and character_2:FindFirstChildOfClass("Humanoid")
 				local humanoidRootPart = character_2 and character_2:FindFirstChild("HumanoidRootPart")
@@ -4935,7 +4997,7 @@ Hub.CoinFarm.OnRoundStarted = function()
 		Hub.CoinFarm.StartRoundSheriffFling()
 
 		task.delay(0.75, function()
-			if foxnameMM2Runtime.alive and Hub.CoinFarm.enabled and Hub.RoundState.active and Hub.CoinFarm.blackScreenEnabled then
+			if NTKHubMM2Runtime.alive and Hub.CoinFarm.enabled and Hub.RoundState.active and Hub.CoinFarm.blackScreenEnabled then
 				Hub.CoinFarm.SetBlackScreen(true, true)
 			end
 		end)
@@ -5279,7 +5341,7 @@ Hub.CoinFarm.GetTargetPosition = function(arg, arg2, arg3, arg4)
 end
 
 Hub.CoinFarm.IsTravelValid = function(arg, arg2, arg3, arg4)
-	return foxnameMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and not Hub.CoinFarm.sheriffFlingRunning and not Hub.CoinFarm.sheriffFlingBlocking and not Hub.FlingActive and Hub.RoundState.active and Hub.RoundState.coinsReady and Hub.CoinFarm.currentCoin == arg2 and Hub.CoinFarm.mode == arg3 and Hub.CoinFarm.position == arg4 and arg2.Parent ~= nil and Hub.CoinFarm.IsCoinAvailable(arg2) and arg.Parent ~= nil and Hub.CoinFarm.IsLocalPlayerInRound()
+	return NTKHubMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and not Hub.CoinFarm.sheriffFlingRunning and not Hub.CoinFarm.sheriffFlingBlocking and not Hub.FlingActive and Hub.RoundState.active and Hub.RoundState.coinsReady and Hub.CoinFarm.currentCoin == arg2 and Hub.CoinFarm.mode == arg3 and Hub.CoinFarm.position == arg4 and arg2.Parent ~= nil and Hub.CoinFarm.IsCoinAvailable(arg2) and arg.Parent ~= nil and Hub.CoinFarm.IsLocalPlayerInRound()
 end
 
 Hub.CoinFarm.PrecalculateNextCoin = function(fromPartOrPos, excludeCoin)
@@ -5812,7 +5874,7 @@ Hub.CoinFarm.Worker = function()
 	local character_, humanoid, humanoidRootPart, currentCoin, flag7
 
 	while true do
-		local alive = foxnameMM2Runtime.alive
+		local alive = NTKHubMM2Runtime.alive
 		local flag8 = alive and not isTerminated
 		local exitTo = nil
 		local flag9, flag10, flag11, flag12, flag13, getTargetPosition, str, v8, position, flag14, flag15, v9, v10, n2, n3, flag16
@@ -5893,12 +5955,12 @@ Hub.CoinFarm.Worker = function()
 										end
 
 										task.wait(0.2)
-										alive = foxnameMM2Runtime.alive
+										alive = NTKHubMM2Runtime.alive
 										flag8 = alive and not isTerminated
 									elseif not Hub.CoinFarm.IndexMap() then
 										Hub.CoinFarm.SetPhase("Waiting for map")
 										task.wait(0.2)
-										alive = foxnameMM2Runtime.alive
+										alive = NTKHubMM2Runtime.alive
 										flag8 = alive and not isTerminated
 									else
 										Hub.CoinFarm.ranThisRound = true
@@ -5923,7 +5985,7 @@ Hub.CoinFarm.Worker = function()
 											Hub.CoinFarm.currentCoin = nil
 											Hub.CoinFarm.SetPhase("Waiting for respawn")
 											task.wait(0.2)
-											alive = foxnameMM2Runtime.alive
+											alive = NTKHubMM2Runtime.alive
 											flag8 = alive and not isTerminated
 										else
 											currentCoin = Hub.CoinFarm.currentCoin
@@ -5944,7 +6006,7 @@ Hub.CoinFarm.Worker = function()
 												Hub.CoinFarm.DisableUnder()
 												Hub.CoinFarm.SetPhase("Waiting for coin")
 												task.wait(0.15)
-												alive = foxnameMM2Runtime.alive
+												alive = NTKHubMM2Runtime.alive
 												flag8 = alive and not isTerminated
 											else
 												flag7 = Hub.CoinFarm.escapeCoin == currentCoin
@@ -5957,7 +6019,7 @@ Hub.CoinFarm.Worker = function()
 													flag14 = not currentCoin.Parent or Hub.CoinFarm.currentCoin ~= currentCoin
 
 													if flag14 then
-														alive = foxnameMM2Runtime.alive
+														alive = NTKHubMM2Runtime.alive
 														flag8 = alive and not isTerminated
 													else
 														flag15 = Hub.CoinFarm.position == "Under"
@@ -6004,7 +6066,7 @@ Hub.CoinFarm.Worker = function()
 
 														if flag16 then
 															if not (n3 >= 2) then
-																alive = foxnameMM2Runtime.alive
+																alive = NTKHubMM2Runtime.alive
 																flag8 = alive and not isTerminated
 															else
 																Hub.CoinFarm.retryUntil[currentCoin] = os.clock() + 1.5
@@ -6012,17 +6074,17 @@ Hub.CoinFarm.Worker = function()
 																Hub.CoinFarm.currentCoin = nil
 
 																if Hub.CoinFarm.escapeCoin ~= currentCoin then
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																else
 																	Hub.CoinFarm.escapeCoin = nil
 																	Hub.CoinFarm.escapeUnderActive = false
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																end
 															end
 														else
-															alive = foxnameMM2Runtime.alive
+															alive = NTKHubMM2Runtime.alive
 															flag8 = alive and not isTerminated
 														end
 													end
@@ -6035,13 +6097,13 @@ Hub.CoinFarm.Worker = function()
 														end
 
 														task.wait(0.05)
-														alive = foxnameMM2Runtime.alive
+														alive = NTKHubMM2Runtime.alive
 														flag8 = alive and not isTerminated
 													else
 														flag14 = not currentCoin.Parent or Hub.CoinFarm.currentCoin ~= currentCoin
 
 														if flag14 then
-															alive = foxnameMM2Runtime.alive
+															alive = NTKHubMM2Runtime.alive
 															flag8 = alive and not isTerminated
 														else
 															flag15 = Hub.CoinFarm.position == "Under"
@@ -6088,7 +6150,7 @@ Hub.CoinFarm.Worker = function()
 
 															if flag16 then
 																if not (n3 >= 2) then
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																else
 																	Hub.CoinFarm.retryUntil[currentCoin] = os.clock() + 1.5
@@ -6096,17 +6158,17 @@ Hub.CoinFarm.Worker = function()
 																	Hub.CoinFarm.currentCoin = nil
 
 																	if Hub.CoinFarm.escapeCoin ~= currentCoin then
-																		alive = foxnameMM2Runtime.alive
+																		alive = NTKHubMM2Runtime.alive
 																		flag8 = alive and not isTerminated
 																	else
 																		Hub.CoinFarm.escapeCoin = nil
 																		Hub.CoinFarm.escapeUnderActive = false
-																		alive = foxnameMM2Runtime.alive
+																		alive = NTKHubMM2Runtime.alive
 																		flag8 = alive and not isTerminated
 																	end
 																end
 															else
-																alive = foxnameMM2Runtime.alive
+																alive = NTKHubMM2Runtime.alive
 																flag8 = alive and not isTerminated
 															end
 														end
@@ -6178,7 +6240,7 @@ Hub.CoinFarm.Worker = function()
 													flag14 = not currentCoin.Parent or Hub.CoinFarm.currentCoin ~= currentCoin
 
 													if flag14 then
-														alive = foxnameMM2Runtime.alive
+														alive = NTKHubMM2Runtime.alive
 														flag8 = alive and not isTerminated
 													else
 														flag15 = Hub.CoinFarm.position == "Under"
@@ -6225,7 +6287,7 @@ Hub.CoinFarm.Worker = function()
 
 														if flag16 then
 															if not (n3 >= 2) then
-																alive = foxnameMM2Runtime.alive
+																alive = NTKHubMM2Runtime.alive
 																flag8 = alive and not isTerminated
 															else
 																Hub.CoinFarm.retryUntil[currentCoin] = os.clock() + 1.5
@@ -6233,17 +6295,17 @@ Hub.CoinFarm.Worker = function()
 																Hub.CoinFarm.currentCoin = nil
 
 																if Hub.CoinFarm.escapeCoin ~= currentCoin then
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																else
 																	Hub.CoinFarm.escapeCoin = nil
 																	Hub.CoinFarm.escapeUnderActive = false
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																end
 															end
 														else
-															alive = foxnameMM2Runtime.alive
+															alive = NTKHubMM2Runtime.alive
 															flag8 = alive and not isTerminated
 														end
 													end
@@ -6342,7 +6404,7 @@ Hub.CoinFarm.Worker = function()
 													flag14 = not currentCoin.Parent or Hub.CoinFarm.currentCoin ~= currentCoin
 
 													if flag14 then
-														alive = foxnameMM2Runtime.alive
+														alive = NTKHubMM2Runtime.alive
 														flag8 = alive and not isTerminated
 													else
 														flag15 = Hub.CoinFarm.position == "Under"
@@ -6389,7 +6451,7 @@ Hub.CoinFarm.Worker = function()
 
 														if flag16 then
 															if not (n3 >= 2) then
-																alive = foxnameMM2Runtime.alive
+																alive = NTKHubMM2Runtime.alive
 																flag8 = alive and not isTerminated
 															else
 																Hub.CoinFarm.retryUntil[currentCoin] = os.clock() + 1.5
@@ -6397,17 +6459,17 @@ Hub.CoinFarm.Worker = function()
 																Hub.CoinFarm.currentCoin = nil
 
 																if Hub.CoinFarm.escapeCoin ~= currentCoin then
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																else
 																	Hub.CoinFarm.escapeCoin = nil
 																	Hub.CoinFarm.escapeUnderActive = false
-																	alive = foxnameMM2Runtime.alive
+																	alive = NTKHubMM2Runtime.alive
 																	flag8 = alive and not isTerminated
 																end
 															end
 														else
-															alive = foxnameMM2Runtime.alive
+															alive = NTKHubMM2Runtime.alive
 															flag8 = alive and not isTerminated
 														end
 													end
@@ -7313,7 +7375,7 @@ Hub.CoinFarm.SetBlackScreen = function(arg, arg2)
 	table.clear(Hub.CoinFarm.blackScreenLabels)
 
 	local screenGui = Instance.new("ScreenGui")
-	screenGui.Name = "FoxnameCoinFarmBlackScreen_" .. sessionId
+	screenGui.Name = "NTKHubCoinFarmBlackScreen_" .. sessionId
 	screenGui.IgnoreGuiInset = true
 	screenGui.ResetOnSpawn = false
 	screenGui.DisplayOrder = 2147483647
@@ -7453,7 +7515,7 @@ Hub.CoinFarm.SetBlackScreen = function(arg, arg2)
 	end
 
 	local gothamBold = Enum.Font.GothamBold
-	createTextLabel("Title", "FOXNAME", UDim2.fromOffset(78, 24), UDim2.new(1, -102, 0, 24), 20, Color3.fromRGB(255, 244, 247), gothamBold)
+	createTextLabel("Title", "NTK HUB", UDim2.fromOffset(78, 24), UDim2.new(1, -102, 0, 24), 20, Color3.fromRGB(255, 244, 247), gothamBold)
 	local gothamBold2 = Enum.Font.GothamBold
 	createTextLabel("Subtitle", "AFK FARMING MODE", UDim2.fromOffset(78, 48), UDim2.new(1, -190, 0, 18), 11, Color3.fromRGB(255, 83, 122), gothamBold2)
 	local gothamBold3 = Enum.Font.GothamBold
@@ -7658,7 +7720,7 @@ Hub.CoinFarm.SetBlackScreen = function(arg, arg2)
 
 	screenGui.Parent = playerGui
 	screenGui.AncestryChanged:Connect(function(_, parent)
-		if not parent and Hub.CoinFarm.blackScreenEnabled and foxnameMM2Runtime.alive and not isTerminated then
+		if not parent and Hub.CoinFarm.blackScreenEnabled and NTKHubMM2Runtime.alive and not isTerminated then
 			Hub.CoinFarm.blackScreenGui = nil
 			task.defer(function()
 				if Hub.CoinFarm.blackScreenEnabled then
@@ -7686,7 +7748,7 @@ Hub.CoinFarm.SetBlackScreen = function(arg, arg2)
 	Hub.CoinFarm.RefreshBlackScreen()
 
 	task.spawn(function()
-		while foxnameMM2Runtime.alive and not isTerminated and Hub.CoinFarm.blackScreenEnabled and Hub.CoinFarm.blackScreenUpdateGeneration == blackScreenUpdateGeneration and screenGui.Parent do
+		while NTKHubMM2Runtime.alive and not isTerminated and Hub.CoinFarm.blackScreenEnabled and Hub.CoinFarm.blackScreenUpdateGeneration == blackScreenUpdateGeneration and screenGui.Parent do
 			task.wait(1)
 			Hub.CoinFarm.RefreshBlackScreen()
 		end
@@ -7753,10 +7815,10 @@ Hub.CoinFarm.SetEnabled = function(arg)
 		end
 
 		task.spawn(function()
-			while foxnameMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and Hub.CoinFarm.webhookGeneration == webhookGeneration do
+			while NTKHubMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and Hub.CoinFarm.webhookGeneration == webhookGeneration do
 				task.wait(900)
 
-				if foxnameMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and Hub.CoinFarm.webhookGeneration == webhookGeneration then
+				if NTKHubMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and Hub.CoinFarm.webhookGeneration == webhookGeneration then
 					if type(Hub.CoinFarm.SendWebhook) == "function" then
 						Hub.CoinFarm.SendWebhook("15 Minute Update")
 					end
@@ -7912,15 +7974,15 @@ end
 
 Hub.CoinFarm.ApplyResume = function()
 	local genv2 = type(getgenv) == "function" and getgenv() or _G
-	local foxnameCoinFarmResume = genv2.__FoxnameCoinFarmResume
-	genv2.__FoxnameCoinFarmResume = nil
+	local NTKHubCoinFarmResume = genv2.__NTKHubCoinFarmResume
+	genv2.__NTKHubCoinFarmResume = nil
 	local v8
 
-	if type(foxnameCoinFarmResume) ~= "table" and type(isfile) == "function" and type(readfile) == "function" then
-		local ok, result = pcall(isfile, "Foxname_MM2/coin_farm_resume.json")
+	if type(NTKHubCoinFarmResume) ~= "table" and type(isfile) == "function" and type(readfile) == "function" then
+		local ok, result = pcall(isfile, "NTKHub_MM2/coin_farm_resume.json")
 
 		if ok and result then
-			local ok2, result2 = pcall(readfile, "Foxname_MM2/coin_farm_resume.json")
+			local ok2, result2 = pcall(readfile, "NTKHub_MM2/coin_farm_resume.json")
 			local ok3, result3 = pcall(HttpService.JSONDecode, HttpService, ok2 and result2 or "")
 
 			if ok3 and type(result3) == "table" then
@@ -7929,16 +7991,16 @@ Hub.CoinFarm.ApplyResume = function()
 				if n2 <= 0 or math.abs(os.time() - n2) <= 1800 then
 					v8 = result3
 				else
-					v8 = foxnameCoinFarmResume
+					v8 = NTKHubCoinFarmResume
 				end
 			else
-				v8 = foxnameCoinFarmResume
+				v8 = NTKHubCoinFarmResume
 			end
 		else
-			v8 = foxnameCoinFarmResume
+			v8 = NTKHubCoinFarmResume
 		end
 	else
-		v8 = foxnameCoinFarmResume
+		v8 = NTKHubCoinFarmResume
 	end
 
 	if type(v8) ~= "table" then
@@ -8056,10 +8118,10 @@ Hub.CoinFarm.ApplyResume = function()
 	end
 
 	if type(isfile) == "function" and type(delfile) == "function" then
-		local ok, result = pcall(isfile, "Foxname_MM2/coin_farm_resume.json")
+		local ok, result = pcall(isfile, "NTKHub_MM2/coin_farm_resume.json")
 
 		if ok and result then
-			pcall(delfile, "Foxname_MM2/coin_farm_resume.json")
+			pcall(delfile, "NTKHub_MM2/coin_farm_resume.json")
 		end
 	end
 
@@ -8277,7 +8339,7 @@ Hub.GetOwnerESPGradientColor = function(arg)
 	return Hub.OwnerESPColors.Gray:Lerp(Hub.OwnerESPColors.White, (n2 - 0.5) * 2)
 end
 
-Hub.WorldFeatureConfig = { safezoneModelName = "Foxname_MM2_Safezone", xrayTransparency = 0.72 }
+Hub.WorldFeatureConfig = { safezoneModelName = "NTKHub_MM2_Safezone", xrayTransparency = 0.72 }
 
 do
 	local function fn12()
@@ -8297,13 +8359,13 @@ do
 	end
 
 	local function fn13()
-		local str = tostring(genv.FOXNAME_COIN_FARM_WEBHOOK or "")
+		local str = tostring(genv.NTKHub_COIN_FARM_WEBHOOK or "")
 
 		if str == "" and type(isfile) == "function" and type(readfile) == "function" then
-			local ok, result = pcall(isfile, "Foxname_MM2/coin_farm_webhook.txt")
+			local ok, result = pcall(isfile, "NTKHub_MM2/coin_farm_webhook.txt")
 
 			if ok and result then
-				local ok2, result2 = pcall(readfile, "Foxname_MM2/coin_farm_webhook.txt")
+				local ok2, result2 = pcall(readfile, "NTKHub_MM2/coin_farm_webhook.txt")
 
 				if ok2 then
 					str = tostring(result2 or "")
@@ -8328,18 +8390,18 @@ do
 		end
 
 		if not pcall(function()
-			if not isfolder("Foxname_MM2") then
-				makefolder("Foxname_MM2")
+			if not isfolder("NTKHub_MM2") then
+				makefolder("NTKHub_MM2")
 			end
 
-			writefile("Foxname_MM2/coin_farm_webhook.txt", match)
+			writefile("NTKHub_MM2/coin_farm_webhook.txt", match)
 		end) then
 			return false, "Webhook could not be saved."
 		end
 
 		Hub.CoinFarm.webhookUrl = match
 		Hub.CoinFarm.webhookDraft = match
-		genv.FOXNAME_COIN_FARM_WEBHOOK = match
+		genv.NTKHub_COIN_FARM_WEBHOOK = match
 		return true, match == "" and "Webhook cleared." or "Webhook saved."
 	end
 
@@ -8497,7 +8559,7 @@ createScreenGui = function()
 		return v8
 	end
 	local screenGui = Instance.new("ScreenGui")
-	screenGui.Name = "Foxname_MM2_Overlay"
+	screenGui.Name = "NTKHub_MM2_Overlay"
 	screenGui.ResetOnSpawn = false
 	screenGui.IgnoreGuiInset = true
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -9193,7 +9255,7 @@ do
 			local paintSignal = DrawingImmediate.GetPaint(15)
 			assert(paintSignal and type(paintSignal.Connect) == "function")
 			paintSignal:Connect(function()
-				if not foxnameMM2Runtime.alive or isTerminated then
+				if not NTKHubMM2Runtime.alive or isTerminated then
 					return
 				end
 				for lineData in pairs(immediateLines) do
@@ -10418,7 +10480,7 @@ do
 		end
 		local players = Players:GetPlayers()
 		for _, player in ipairs(players) do
-			if not foxnameMM2Runtime.alive or isTerminated then
+			if not NTKHubMM2Runtime.alive or isTerminated then
 				break
 			end
 			if player ~= localPlayer and player ~= murderer and player.Parent and fn26(player) then
@@ -10516,13 +10578,13 @@ do
 				return Hub.MobileRoundTimerGui:FindFirstChild("Timer")
 			end
 			local safeParent = getSafeGuiParent()
-			local oldGui = safeParent and safeParent:FindFirstChild("FoxnameMobileRoundTimer")
+			local oldGui = safeParent and safeParent:FindFirstChild("NTKHubMobileRoundTimer")
 			if oldGui then
 				oldGui:Destroy()
 			end
 			local playerGui = localPlayer:FindFirstChildOfClass("PlayerGui")
 			if playerGui then
-				local oldGui2 = playerGui:FindFirstChild("FoxnameMobileRoundTimer")
+				local oldGui2 = playerGui:FindFirstChild("NTKHubMobileRoundTimer")
 				if oldGui2 then
 					oldGui2:Destroy()
 				end
@@ -10532,7 +10594,7 @@ do
 			end
 
 			local screenGui = Instance.new("ScreenGui")
-			screenGui.Name = "FoxnameMobileRoundTimer"
+			screenGui.Name = "NTKHubMobileRoundTimer"
 			screenGui.ResetOnSpawn = false
 			screenGui.IgnoreGuiInset = false
 			screenGui.DisplayOrder = 20
@@ -11003,7 +11065,7 @@ do
 			return
 		end
 		local folder = Instance.new("Folder")
-		folder.Name = "FoxnameCoinESP"
+		folder.Name = "NTKHubCoinESP"
 		folder.Parent = parent
 		local highlight = Instance.new("Highlight")
 		highlight.Name = "Highlight"
@@ -11359,7 +11421,7 @@ trackConn(Players.PlayerRemoving:Connect(function(player)
 	fn32(player)
 end))
 
-Hub.ReexecuteScriptUrl = "https://raw.githubusercontent.com/FoxnameTeam/OSS/development/Murder-Mystery-2/main.luau"
+Hub.ReexecuteScriptUrl = "https://pastefy.app/iMIKFudw/raw"
 Hub.AdminReexecuteScriptUrl = Hub.ReexecuteScriptUrl
 Hub.CoinFarmKickRecoveryStarted = false
 Hub.SuppressCoinFarmKickRecovery = false
@@ -11411,12 +11473,12 @@ do
 
 		if ok and type(result) == "string" then
 			pcall(function()
-				if type(isfolder) == "function" and type(makefolder) == "function" and not isfolder("Foxname_MM2") then
-					makefolder("Foxname_MM2")
+				if type(isfolder) == "function" and type(makefolder) == "function" and not isfolder("NTKHub_MM2") then
+					makefolder("NTKHub_MM2")
 				end
 
 				if type(writefile) == "function" then
-					writefile("Foxname_MM2/coin_farm_resume.json", result)
+					writefile("NTKHub_MM2/coin_farm_resume.json", result)
 				end
 			end)
 		end
@@ -11437,7 +11499,7 @@ do
 		if not ok or type(result) ~= "string" then
 			return false, "resume state could not be encoded"
 		end
-		local str2 = string.format("if not game:IsLoaded() then game.Loaded:Wait() end;%sloadstring(game:HttpGet(%q))()", string.format("local e=(getgenv and getgenv()) or _G;e.__FoxnameCoinFarmResume=game:GetService('HttpService'):JSONDecode(%q);", result), str)
+		local str2 = string.format("if not game:IsLoaded() then game.Loaded:Wait() end;%sloadstring(game:HttpGet(%q))()", string.format("local e=(getgenv and getgenv()) or _G;e.__NTKHubCoinFarmResume=game:GetService('HttpService'):JSONDecode(%q);", result), str)
 		local ok2, result2 = pcall(queueOnTeleport, str2)
 		return ok2, ok2 and nil or tostring(result2)
 	end
@@ -11768,7 +11830,7 @@ do
 
 				if Hub.CoinFarm.TryServerTeleport(game.PlaceId, id, 7) then
 					task.delay(15, function()
-						if foxnameMM2Runtime.alive and Hub.CoinFarm.enabled then
+						if NTKHubMM2Runtime.alive and Hub.CoinFarm.enabled then
 							Hub.CoinFarm.serverHopRunning = false
 						end
 					end)
@@ -11782,7 +11844,7 @@ do
 			if Hub.CoinFarm.enabled and Hub.CoinFarm.antiBotEnabled then
 				if Hub.CoinFarm.TryServerTeleport(game.PlaceId, nil, 8) then
 					task.delay(15, function()
-						if foxnameMM2Runtime.alive and Hub.CoinFarm.enabled then
+						if NTKHubMM2Runtime.alive and Hub.CoinFarm.enabled then
 							Hub.CoinFarm.serverHopRunning = false
 						end
 					end)
@@ -11821,7 +11883,7 @@ do
 
 				if Hub.CoinFarm.TryServerTeleport(game.PlaceId, id, 7) then
 					task.delay(15, function()
-						if foxnameMM2Runtime.alive and Hub.CoinFarm.enabled then
+						if NTKHubMM2Runtime.alive and Hub.CoinFarm.enabled then
 							Hub.CoinFarm.serverHopRunning = false
 							Hub.CoinFarm.serverHopTimerStartedAt = os.clock()
 						end
@@ -11835,7 +11897,7 @@ do
 
 			if Hub.CoinFarm.enabled and Hub.CoinFarm.TryServerTeleport(game.PlaceId, nil, 8) then
 				task.delay(15, function()
-					if foxnameMM2Runtime.alive and Hub.CoinFarm.enabled then
+					if NTKHubMM2Runtime.alive and Hub.CoinFarm.enabled then
 						Hub.CoinFarm.serverHopRunning = false
 						Hub.CoinFarm.serverHopTimerStartedAt = os.clock()
 					end
@@ -11852,7 +11914,7 @@ do
 	end
 
 	task.spawn(function()
-		while foxnameMM2Runtime.alive and not isTerminated do
+		while NTKHubMM2Runtime.alive and not isTerminated do
 			if Hub.CoinFarm.enabled and Hub.CoinFarm.antiBotEnabled and not Hub.CoinFarm.serverHopRunning then
 				Hub.CoinFarm.StartAntiBotServerHop()
 			end
@@ -11862,7 +11924,7 @@ do
 	end)
 
 	task.spawn(function()
-		while foxnameMM2Runtime.alive and not isTerminated do
+		while NTKHubMM2Runtime.alive and not isTerminated do
 			if Hub.CoinFarm.enabled and Hub.CoinFarm.serverHopTimerEnabled and not Hub.CoinFarm.serverHopRunning then
 				if Hub.CoinFarm.serverHopTimerStartedAt <= 0 then
 					Hub.CoinFarm.serverHopTimerStartedAt = os.clock()
@@ -11882,11 +11944,11 @@ do
 	end)
 
 	task.spawn(function()
-		while foxnameMM2Runtime.alive and not isTerminated and not Hub.CoinFarm.resumedFromServerHop do
+		while NTKHubMM2Runtime.alive and not isTerminated and not Hub.CoinFarm.resumedFromServerHop do
 			task.wait(0.5)
 		end
 
-		if not foxnameMM2Runtime.alive or UserInputService.TouchEnabled or not UserInputService.KeyboardEnabled then
+		if not NTKHubMM2Runtime.alive or UserInputService.TouchEnabled or not UserInputService.KeyboardEnabled then
 			return
 		end
 		task.wait(8)
@@ -11942,7 +12004,7 @@ do
 		local n2 = os.clock() + 40
 		local n3 = 0
 
-		while foxnameMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and os.clock() < n2 do
+		while NTKHubMM2Runtime.alive and not isTerminated and Hub.CoinFarm.enabled and os.clock() < n2 do
 			if fn37() then
 				n3 += 1
 				if n3 >= 4 then
@@ -11975,7 +12037,7 @@ do
 		local v9, v10 = fn35()
 
 		if not v9 then
-			warn("[Foxname] Coin Farm re-execute queue failed: " .. tostring(v10))
+			warn("[NTKHUB] Coin Farm re-execute queue failed: " .. tostring(v10))
 		end
 
 		local placeId = game.PlaceId
@@ -12039,7 +12101,7 @@ do
 			CoreGui = game:GetService("CoreGui")
 		end)
 
-		while foxnameMM2Runtime.alive and not isTerminated do
+		while NTKHubMM2Runtime.alive and not isTerminated do
 			if Hub.CoinFarm.enabled and not Hub.SuppressCoinFarmKickRecovery and not Hub.CoinFarmKickRecoveryStarted then
 				local str = ""
 
@@ -12066,7 +12128,7 @@ do
 		local v9, v10 = fn35()
 
 		if not v9 then
-			warn("[Foxname] Re-execute queue failed: " .. tostring(v10))
+			warn("[NTKHUB] Re-execute queue failed: " .. tostring(v10))
 		end
 
 		local placeId = tonumber(arg2) or game.PlaceId
@@ -12164,7 +12226,7 @@ do
 			end
 		end)
 
-		FoxnameKickPlayer(localPlayer, arg)
+		NTKHubKickPlayer(localPlayer, arg)
 	end
 
 	Hub.RunBombJump = function()
@@ -12707,7 +12769,7 @@ do
 
 		task.spawn(function()
 			local ok, image = pcall(function()
-				for _, v9 in ipairs({ "FoxnameMM2", "FoxnameMM2/icons_v1" }) do
+				for _, v9 in ipairs({ "NTKHubMM2", "NTKHubMM2/icons_v1" }) do
 					if not isfolder(v9) then
 						makefolder(v9)
 					end
@@ -12717,7 +12779,7 @@ do
 					return type(arg2) == "string" and #arg2 >= 8 and arg2:sub(1, 8) == "\137PNG\r\n\26\n"
 				end
 
-				local str = "FoxnameMM2/icons_v1/" .. arg
+				local str = "NTKHubMM2/icons_v1/" .. arg
 				local ok = isfile(str)
 
 				if ok and type(readfile) == "function" then
@@ -12727,7 +12789,7 @@ do
 				end
 
 				if not ok then
-					local ok2, result = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/FoxnameTeam/OSS/main/Murder-Mystery-2/icons/" .. arg)
+					local ok2, result = pcall(game.HttpGet, game, "https://raw.githubusercontent.com/kietkidlo-hub/NTKHub-MM2/main/Murder-Mystery-2/icons/" .. arg)
 
 					if ok2 and fn41(result) then
 						writefile(str, result)
@@ -12745,7 +12807,7 @@ do
 			if ok and type(image) == "string" and image ~= "" then
 				local flag8 = false
 				local imageLabel = Instance.new("ImageLabel")
-				imageLabel.Name = "FoxnameRemoteIconPreload"
+				imageLabel.Name = "NTKHubRemoteIconPreload"
 				imageLabel.Size = UDim2.fromOffset(1, 1)
 				imageLabel.Position = UDim2.fromOffset(-100, -100)
 				imageLabel.BackgroundTransparency = 1
@@ -13324,7 +13386,7 @@ Hub.TouchButtons.ToggleGetGunButton = function(arg)
 	getGunButtonState.enabled = arg and true or false
 
 	if getGunButtonState.enabled then
-		Hub.TouchButtons.Create(getGunButtonState, "Foxname_MM2_GetGunButton", "GetGunButton", "Get Gun", function()
+		Hub.TouchButtons.Create(getGunButtonState, "NTKHub_MM2_GetGunButton", "GetGunButton", "Get Gun", function()
 			return false
 		end, function()
 			if Hub.TakeDroppedGunOnce then
@@ -13341,7 +13403,7 @@ Hub.TouchButtons.ToggleBombJumpButton = function(arg)
 	bombJumpButtonState.enabled = arg and true or false
 
 	if bombJumpButtonState.enabled then
-		Hub.TouchButtons.Create(bombJumpButtonState, "Foxname_MM2_BombJumpButton", "BombJumpButton", "Bomb Jump", function()
+		Hub.TouchButtons.Create(bombJumpButtonState, "NTKHub_MM2_BombJumpButton", "BombJumpButton", "Bomb Jump", function()
 			return false
 		end, function()
 			if Hub.RunBombJump then
@@ -13358,7 +13420,7 @@ Hub.TouchButtons.ToggleXRayButton = function(arg)
 	xRayButtonState.enabled = arg and true or false
 
 	if xRayButtonState.enabled then
-		Hub.TouchButtons.Create(xRayButtonState, "Foxname_MM2_XRayButton", "XRayButton", "XRay", function()
+		Hub.TouchButtons.Create(xRayButtonState, "NTKHub_MM2_XRayButton", "XRayButton", "XRay", function()
 			return Hub.XRayEnabled
 		end, function(arg2)
 			Hub.TouchButtons.SetXRayEnabled(arg2, true)
@@ -13373,7 +13435,7 @@ Hub.TouchButtons.ToggleAimlockButton = function(arg)
 	aimlockButtonState.enabled = arg and true or false
 
 	if aimlockButtonState.enabled then
-		Hub.TouchButtons.Create(aimlockButtonState, "Foxname_MM2_AimlockButton", "AimlockButton", "Aimlock", function()
+		Hub.TouchButtons.Create(aimlockButtonState, "NTKHub_MM2_AimlockButton", "AimlockButton", "Aimlock", function()
 			return Hub.AimEnabled
 		end, function(arg2)
 			Hub.TouchButtons.SetAimEnabled(arg2, true)
@@ -13388,7 +13450,7 @@ Hub.TouchButtons.ToggleFlyButton = function(arg)
 	flyButtonState.enabled = arg and true or false
 
 	if flyButtonState.enabled then
-		Hub.TouchButtons.Create(flyButtonState, "Foxname_MM2_FlyButton", "FlyButton", "Fly", function()
+		Hub.TouchButtons.Create(flyButtonState, "NTKHub_MM2_FlyButton", "FlyButton", "Fly", function()
 			return Hub.FlyEnabled
 		end, function(arg2)
 			Hub.TouchButtons.SetFlyEnabled(arg2, true)
@@ -13403,7 +13465,7 @@ Hub.TouchButtons.ToggleNoclipButton = function(arg)
 	noclipButtonState.enabled = arg and true or false
 
 	if noclipButtonState.enabled then
-		Hub.TouchButtons.Create(noclipButtonState, "Foxname_MM2_NoclipButton", "NoclipButton", "Noclip", function()
+		Hub.TouchButtons.Create(noclipButtonState, "NTKHub_MM2_NoclipButton", "NoclipButton", "Noclip", function()
 			return Hub.NoclipEnabled
 		end, function(arg2)
 			Hub.TouchButtons.SetNoclipEnabled(arg2, true)
@@ -13418,7 +13480,7 @@ Hub.TouchButtons.ToggleThrowKnifeButton = function(arg)
 	throwKnifeButtonState.enabled = arg and true or false
 
 	if throwKnifeButtonState.enabled then
-		Hub.TouchButtons.Create(throwKnifeButtonState, "Foxname_MM2_ThrowKnifeButton", "ThrowKnifeButton", "Throw Knife", function()
+		Hub.TouchButtons.Create(throwKnifeButtonState, "NTKHub_MM2_ThrowKnifeButton", "ThrowKnifeButton", "Throw Knife", function()
 			return false
 		end, function()
 			if Hub.TriggerThrowKnifeInput then
@@ -13436,7 +13498,7 @@ Hub.TouchButtons.ToggleAutoShootButton = function(arg)
 	Hub.AutoShootState.enabled = autoShootDragState.enabled
 
 	if autoShootDragState.enabled then
-		Hub.TouchButtons.Create(autoShootDragState, "Foxname_MM2_AutoShootButton", "AutoShootButton", "Shoot", function()
+		Hub.TouchButtons.Create(autoShootDragState, "NTKHub_MM2_AutoShootButton", "AutoShootButton", "Shoot", function()
 			return false
 		end, function()
 			if Hub.TriggerAutoShootInput then
@@ -13577,7 +13639,7 @@ Hub.TouchButtons.ToggleQuickMenu = function(arg)
 	end
 	Hub.TouchButtons.DestroyQuickMenu()
 	local screenGui = Instance.new("ScreenGui")
-	screenGui.Name = "Foxname_MM2_QuickMenu"
+	screenGui.Name = "NTKHub_MM2_QuickMenu"
 	screenGui.ResetOnSpawn = false
 	screenGui.IgnoreGuiInset = true
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -14025,7 +14087,7 @@ local function fn37()
 		waitForGameUIReady(6)
 		local n3 = os.clock() + 5
 
-		while foxnameMM2Runtime.alive and not isTerminated do
+		while NTKHubMM2Runtime.alive and not isTerminated do
 			if fn38() then
 				Hub.MM2StartupDataReady = true
 				break
@@ -14204,7 +14266,7 @@ local function fn37()
 		wallPhaseButtonState.enabled = arg and true or false
 
 		if wallPhaseButtonState.enabled then
-			Hub.TouchButtons.Create(wallPhaseButtonState, "Foxname_MM2_WallPhaseButton", "WallPhaseButton", "Wall Glitch", function()
+			Hub.TouchButtons.Create(wallPhaseButtonState, "NTKHub_MM2_WallPhaseButton", "WallPhaseButton", "Wall Glitch", function()
 				return false
 			end, function()
 				local wallPhaseAssist = Hub.WallPhaseAssist
@@ -14222,7 +14284,7 @@ local function fn37()
 
 	Hub.WallPhaseAssist.Run = function()
 		local wallPhaseAssist = Hub.WallPhaseAssist
-		if wallPhaseAssist.busy or not foxnameMM2Runtime.alive then
+		if wallPhaseAssist.busy or not NTKHubMM2Runtime.alive then
 			return false
 		end
 		wallPhaseAssist.busy = true
@@ -14544,11 +14606,11 @@ local function fn37()
 			emotesWheel.ClipsDescendants = false
 		end)
 
-		navigationFrame = navigationFrame or emotesWheel:FindFirstChild("FoxnameEmotePages")
+		navigationFrame = navigationFrame or emotesWheel:FindFirstChild("NTKHubEmotePages")
 
 		if not navigationFrame then
 			navigationFrame = Instance.new("Frame")
-			navigationFrame.Name = "FoxnameEmotePages"
+			navigationFrame.Name = "NTKHubEmotePages"
 			navigationFrame.AnchorPoint = Vector2.new(0.5, 0)
 			navigationFrame.Position = UDim2.new(0.5, 0, 1, 12)
 			navigationFrame.Size = UDim2.fromOffset(150, 34)
@@ -15178,18 +15240,18 @@ local function fn37()
 
 		local v17 = backpack:FindFirstChild(arg)
 
-		if v17 and v17:GetAttribute("FoxnameSyncedItem") then
+		if v17 and v17:GetAttribute("NTKHubSyncedItem") then
 			v17:Destroy()
 		end
 
 		local character_ = localPlayer.Character and localPlayer.Character:FindFirstChild(arg)
 
-		if character_ and character_:GetAttribute("FoxnameSyncedItem") then
+		if character_ and character_:GetAttribute("NTKHubSyncedItem") then
 			character_:Destroy()
 		end
 
 		local clone = v16:Clone()
-		clone:SetAttribute("FoxnameSyncedItem", true)
+		clone:SetAttribute("NTKHubSyncedItem", true)
 		clone.Parent = backpack
 		humanoid:EquipTool(clone)
 	end
@@ -15252,7 +15314,7 @@ local function fn37()
 		for _, v16 in ipairs({ localPlayer:FindFirstChildOfClass("Backpack"), character_ }) do
 			if v16 then
 				for _, child in ipairs(v16:GetChildren()) do
-					if child:GetAttribute("FoxnameSyncedItem") then
+					if child:GetAttribute("NTKHubSyncedItem") then
 						child:Destroy()
 					end
 				end
@@ -15650,14 +15712,14 @@ do
 		if sound and sound.Parent then
 			return sound
 		end
-		local foxnameLocalRadio = SoundService:FindFirstChild("FoxnameLocalRadio")
+		local NTKHubLocalRadio = SoundService:FindFirstChild("NTKHubLocalRadio")
 
-		if foxnameLocalRadio then
-			foxnameLocalRadio:Destroy()
+		if NTKHubLocalRadio then
+			NTKHubLocalRadio:Destroy()
 		end
 
 		sound = Instance.new("Sound")
-		sound.Name = "FoxnameLocalRadio"
+		sound.Name = "NTKHubLocalRadio"
 		sound.Volume = n2 / 100
 		sound.Looped = looped
 		sound.Parent = SoundService
@@ -15827,7 +15889,7 @@ do
 
 	local function fn39(arg, arg2)
 		local bulletTracer = Hub.BulletTracer
-		if not bulletTracer.enabled or not foxnameMM2Runtime.alive then
+		if not bulletTracer.enabled or not NTKHubMM2Runtime.alive then
 			return
 		end
 		local position = typeof(arg) == "CFrame" and arg.Position or typeof(arg) == "Vector3" and arg or typeof(arg) == "Instance" and arg:IsA("Attachment") and arg.WorldPosition
@@ -15862,7 +15924,7 @@ do
 
 		if not folder or not folder.Parent then
 			folder = Instance.new("Folder")
-			folder.Name = "FoxnameLocalBulletTracers_" .. sessionId
+			folder.Name = "NTKHubLocalBulletTracers_" .. sessionId
 			folder.Parent = workspace
 			bulletTracer.folder = folder
 		end
@@ -16215,14 +16277,14 @@ do
 		if worldVisuals.colorEffect and worldVisuals.colorEffect.Parent then
 			return worldVisuals.colorEffect
 		end
-		local v9 = Lighting:FindFirstChild("FoxnameWorldColor_" .. sessionId)
+		local v9 = Lighting:FindFirstChild("NTKHubWorldColor_" .. sessionId)
 
 		if v9 then
 			v9:Destroy()
 		end
 
 		local colorCorrectionEffect = Instance.new("ColorCorrectionEffect")
-		colorCorrectionEffect.Name = "FoxnameWorldColor_" .. sessionId
+		colorCorrectionEffect.Name = "NTKHubWorldColor_" .. sessionId
 		colorCorrectionEffect.Parent = Lighting
 		worldVisuals.colorEffect = colorCorrectionEffect
 		return colorCorrectionEffect
@@ -16231,21 +16293,21 @@ do
 	local function fn38()
 		if not (worldVisuals.bloomEffect and worldVisuals.bloomEffect.Parent) then
 			local bloomEffect = Instance.new("BloomEffect")
-			bloomEffect.Name = "FoxnameWorldBloom_" .. sessionId
+			bloomEffect.Name = "NTKHubWorldBloom_" .. sessionId
 			bloomEffect.Parent = Lighting
 			worldVisuals.bloomEffect = bloomEffect
 		end
 
 		if not (worldVisuals.sunRaysEffect and worldVisuals.sunRaysEffect.Parent) then
 			local sunRaysEffect = Instance.new("SunRaysEffect")
-			sunRaysEffect.Name = "FoxnameWorldSunRays_" .. sessionId
+			sunRaysEffect.Name = "NTKHubWorldSunRays_" .. sessionId
 			sunRaysEffect.Parent = Lighting
 			worldVisuals.sunRaysEffect = sunRaysEffect
 		end
 
 		if not (worldVisuals.depthEffect and worldVisuals.depthEffect.Parent) then
 			local depthOfFieldEffect = Instance.new("DepthOfFieldEffect")
-			depthOfFieldEffect.Name = "FoxnameWorldDepth_" .. sessionId
+			depthOfFieldEffect.Name = "NTKHubWorldDepth_" .. sessionId
 			depthOfFieldEffect.Parent = Lighting
 			worldVisuals.depthEffect = depthOfFieldEffect
 		end
@@ -16330,7 +16392,7 @@ do
 			return
 		end
 		local sky = Instance.new("Sky")
-		sky.Name = "FoxnameWorldSky_" .. sessionId
+		sky.Name = "NTKHubWorldSky_" .. sessionId
 		sky.SkyboxBk = "rbxassetid://" .. v9.Bk
 		sky.SkyboxDn = "rbxassetid://" .. v9.Dn
 		sky.SkyboxFt = "rbxassetid://" .. v9.Ft
@@ -16376,7 +16438,7 @@ do
 			return
 		end
 		local part = Instance.new("Part")
-		part.Name = "FoxnameSnowEmitter_" .. sessionId
+		part.Name = "NTKHubSnowEmitter_" .. sessionId
 		part.Anchored = true
 		part.CanCollide = false
 		part.CanQuery = false
@@ -17883,7 +17945,7 @@ do
 			return
 		end
 		waitForGameUIReady(6)
-		if not foxnameMM2Runtime.alive or isTerminated then
+		if not NTKHubMM2Runtime.alive or isTerminated then
 			return
 		end
 		local boxes = fn41()
@@ -17916,7 +17978,7 @@ do
 			local generation = eventBox.generation
 
 			task.spawn(function()
-				while foxnameMM2Runtime.alive and not isTerminated and eventBox.autoBuy and eventBox.generation == generation do
+				while NTKHubMM2Runtime.alive and not isTerminated and eventBox.autoBuy and eventBox.generation == generation do
 					task.wait(fn45(true) and 4.75 or 1.75)
 				end
 			end)
@@ -18265,7 +18327,7 @@ do
 
 			task.spawn(function()
 				while true do
-					if foxnameMM2Runtime.alive and not isTerminated and tbl7.generation == generation and tool.Parent then
+					if NTKHubMM2Runtime.alive and not isTerminated and tbl7.generation == generation and tool.Parent then
 						if not tbl7.active then
 							task.wait(0.1)
 							continue
@@ -20561,7 +20623,7 @@ tbl2.General:Button({
 			local n3 = 0
 
 			for _, player in ipairs(players) do
-				if not (not foxnameMM2Runtime.alive or false) then
+				if not (not NTKHubMM2Runtime.alive or false) then
 					if player ~= localPlayer and player.Parent and (isOwner or not fn6(player)) then
 						n2 += 1
 
@@ -20830,7 +20892,7 @@ local function fn39()
 
 	local tbl8 = {
 		["No Background"] = "rbxassetid://0",
-		Main = "rbxassetid://82503368188240",
+		Main = customBackground,
 		Extra = "rbxassetid://75141440720375",
 		["Extra 1"] = "rbxassetid://131127340766745",
 		Furina = "rbxassetid://133222171266319",
@@ -20905,9 +20967,9 @@ local function fn39()
 	local v9 = nil
 	local v10 = nil
 	local v11 = nil
-	local str2 = "FoxnameAutoLoad"
-	local str3 = "FoxnameButtonPositions"
-	local str4 = "FoxnameCoinFarmState"
+	local str2 = "NTKHubAutoLoad"
+	local str3 = "NTKHubButtonPositions"
+	local str4 = "NTKHubCoinFarmState"
 	local flag7 = false
 	local str5 = "default"
 
@@ -21228,7 +21290,7 @@ local function fn39()
 	end
 
 	local function fn52(arg)
-		local path = type(configManager) == "table" and type(configManager.Path) == "string" and configManager.Path or "WindUI/Foxname_MM2/config/"
+		local path = type(configManager) == "table" and type(configManager.Path) == "string" and configManager.Path or "WindUI/NTKHub_MM2/config/"
 
 		if not path:match("[/\\]$") then
 			path ..= "/"
@@ -21238,13 +21300,13 @@ local function fn39()
 	end
 
 	local function fn53()
-		local path = type(configManager) == "table" and type(configManager.Path) == "string" and configManager.Path or "WindUI/Foxname_MM2/config/"
+		local path = type(configManager) == "table" and type(configManager.Path) == "string" and configManager.Path or "WindUI/NTKHub_MM2/config/"
 
 		if not path:match("[/\\]$") then
 			path ..= "/"
 		end
 
-		return path .. "_foxname_autoload.txt"
+		return path .. "_NTKHub_autoload.txt"
 	end
 
 	local function fn54()
@@ -21364,7 +21426,7 @@ local function fn39()
 		local flag8 = false
 
 		if txt == nil then
-			txt, v12 = fn58("FoxnameMM2/auto_load_config.txt")
+			txt, v12 = fn58("NTKHubMM2/auto_load_config.txt")
 			flag8 = txt ~= nil
 		end
 
@@ -21632,9 +21694,9 @@ local function fn39()
 				if not autoSaveLoopRunning then
 					autoSaveLoopRunning = true
 					task.spawn(function()
-						while foxnameMM2Runtime.alive and not isTerminated and Hub.AutoSaveConfig do
+						while NTKHubMM2Runtime.alive and not isTerminated and Hub.AutoSaveConfig do
 							task.wait(30)
-							if foxnameMM2Runtime.alive and not isTerminated and Hub.AutoSaveConfig then
+							if NTKHubMM2Runtime.alive and not isTerminated and Hub.AutoSaveConfig then
 								local name = fn41(v9 or str or "default")
 								local c = fn66(name)
 								if c then
@@ -21912,7 +21974,7 @@ local function fn40()
 		rayFilterCharacter = nil,
 	}
 
-	local str = "Foxname_MM2_Aim_" .. sessionId
+	local str = "NTKHub_MM2_Aim_" .. sessionId
 	local flag7 = false
 
 	local fovDrawingImmediate = type(DrawingImmediate) == "table" and type(DrawingImmediate.GetPaint) == "function" and type(DrawingImmediate.Circle) == "function"
@@ -21923,7 +21985,7 @@ local function fn40()
 			local paintSignal = DrawingImmediate.GetPaint(20)
 			assert(paintSignal and type(paintSignal.Connect) == "function", "missing GetPaint.Connect")
 			paintSignal:Connect(function()
-				if not foxnameMM2Runtime.alive or isTerminated then
+				if not NTKHubMM2Runtime.alive or isTerminated then
 					return
 				end
 				if Hub.AimEnabled and not Hub.HideFOV then
@@ -22617,7 +22679,7 @@ end
 task.spawn(function()
 	RunService.Heartbeat:Wait()
 
-	if foxnameMM2Runtime.alive and not isTerminated then
+	if NTKHubMM2Runtime.alive and not isTerminated then
 		if Hub.ApplyAutoLoadConfig then
 			Hub.ApplyAutoLoadConfig()
 		end
@@ -22631,10 +22693,10 @@ end)
 
 task.spawn(function()
 	while true do
-		if foxnameMM2Runtime.alive and not isTerminated then
+		if NTKHubMM2Runtime.alive and not isTerminated then
 			task.wait(30)
 
-			if not (not foxnameMM2Runtime.alive or false) then
+			if not (not NTKHubMM2Runtime.alive or false) then
 				cleanupDeadConns()
 
 				for k in pairs(Hub.NoclipParts) do
@@ -22739,11 +22801,11 @@ task.spawn(function()
 end)
 
 task.spawn(function()
-	while foxnameMM2Runtime.alive and not isTerminated and not Hub.MM2StartupDataReady do
+	while NTKHubMM2Runtime.alive and not isTerminated and not Hub.MM2StartupDataReady do
 		task.wait(0.1)
 	end
 
-	if not foxnameMM2Runtime.alive then
+	if not NTKHubMM2Runtime.alive then
 		return
 	end
 	RunService.Heartbeat:Wait()
@@ -22755,4 +22817,3 @@ task.spawn(function()
 		Duration = 1.5,
 	})
 end)
-
