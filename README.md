@@ -1,6 +1,6 @@
-# FoxnameTeam / OSS
+# NTK / OSS
 
-Open-source Foxname scripts.
+Open-source kietlackid scripts.
 
 | Folder | Description |
 | --- | --- |
